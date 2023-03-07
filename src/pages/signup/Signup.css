@@ -1,0 +1,114 @@
+.signup-page {
+  width: 1050px;
+  height: 600px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+  background-color: #1f2023;
+  font-family: "Inter", sans-serif;
+  color: rgb(234, 232, 232);
+}
+
+.signup-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* border: 1px solid red; */
+}
+
+.signup-box {
+  width: 270px;
+  height: 380px;
+  display: flex;
+  border-left: 1px solid #f04555;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding: 30px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #333436;
+  margin-top: 80px;
+  gap: 15px;
+}
+
+.member-info-box {
+  width: 270px;
+  height: 380px;
+  display: flex;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  /* border: 1px solid #f04555; */
+  padding: 30px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #262728;
+  margin-top: 80px;
+  gap: 15px;
+}
+
+.member-info-box h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.how-text {
+  font-size: 14px;
+  line-height: 16px;
+}
+.icon {
+  font-size: 20px;
+}
+.how-box {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+.symbol {
+  width: 100px;
+}
+.signup-box h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.signup-box .input-box {
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 270px;
+  height: 35px;
+}
+
+.input-box::placeholder {
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  color: #b7b7b8;
+  padding-left: 10px;
+}
+
+.signup-box p {
+  font-size: 12px;
+  color: #999999;
+}
+
+.signup-box button {
+  font-size: 16px;
+  background-color: #f04555;
+  font-family: "Inter", sans-serif;
+  color: white;
+  border: none;
+  margin-top: 40px;
+  width: 270px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.signup-box .connect-here {
+  font-size: 12px;
+  font-family: "Inter", sans-serif;
+}

@@ -1,0 +1,85 @@
+.review-page {
+  width: 1050px;
+  height: 600px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+  background-color: #1f2023;
+  font-family: "Inter", sans-serif;
+  color: rgb(234, 232, 232);
+}
+
+.comment-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  width: 100%;
+  padding-top: 150px;
+  /* border: 1px solid red; */
+  border-radius: 20px;
+}
+
+.comment-section input textarea {
+  width: 250px;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-container-title {
+  margin-bottom: 15px;
+}
+
+.review-input-box {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  /* border: 1px solid #f04555; */
+  background-color: #424448;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.title-input {
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+.title-input::placeholder {
+  font-family: "Inter", sans-serif;
+  padding: 5px;
+}
+.text-input {
+  height: 60px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+.text-input::placeholder {
+  font-family: "Inter", sans-serif;
+  padding: 5px;
+}
+
+.label {
+  color: #adadb0;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.publish-btn {
+  font-family: "Inter", sans-serif;
+  background-color: #f04555;
+  border: none;
+  width: 60px;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}

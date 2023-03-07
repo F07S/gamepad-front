@@ -1,0 +1,59 @@
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  font-family: "Cabin Sketch", sans-serif;
+}
+
+.login-box {
+  width: 270px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 60px;
+  gap: 15px;
+}
+
+.login-box h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.login-box input {
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  border-bottom: 1px solid #b7b7b8;
+  outline: none;
+  width: 270px;
+  height: 35px;
+}
+
+.input-tab::placeholder {
+  font-size: 16px;
+  color: #b7b7b8;
+}
+
+.login-box button {
+  font-size: 16px;
+  background-color: rgb(72, 72, 185);
+  font-family: "Cabin Sketch", sans-serif;
+  color: white;
+  border: none;
+  margin-top: 40px;
+  width: 270px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.login-box .signup-here {
+  font-size: 16px;
+  font-family: "News Cycle", sans-serif;
+}
+
+.login-box p {
+  font-size: 12px;
+}
