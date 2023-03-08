@@ -1,20 +1,22 @@
 import logo from "../../img/logo.png";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Header = ({ handleToken }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  // Navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       const token = Cookies.get("token");
-      console.log(token);
+      // console.log(token);
       try {
         const response = await axios.get(`http://localhost:4500/user`);
-        console.log(response.data.user);
+        // console.log(response.data.user);
         setData(response.data.user);
         setIsLoading(false);
       } catch (error) {
@@ -37,9 +39,16 @@ const Header = ({ handleToken }) => {
           <Link to="/allgames">
             <button className="page-btn">All Games</button>
           </Link>
-          <Link to="/collection">
-            <button className="page-btn">My Collection</button>
-          </Link>
+
+          <button
+            className="page-btn"
+            onClick={() => {
+              token ? navigate("/collection") : navigate("/login");
+            }}
+          >
+            My Collection
+          </button>
+
           {token ? (
             <button
               className="page-btn"

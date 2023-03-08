@@ -1,17 +1,23 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import LinesEllipsis from "react-lines-ellipsis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Cookies from "js-cookie";
 import axios from "axios";
 const Game = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState();
   const [isReviewLoading, setIsReviewLoading] = useState(true);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState();
+  const [savedName, setSavedName] = useState();
+  const [savedImg, setSavedImg] = useState();
+
+  // USER TOKEN
+  const token = Cookies.get("token");
 
   // Navigate
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // SIMILAR GAMES USESTATES
   const [simData, setSimData] = useState();
@@ -30,12 +36,14 @@ const Game = () => {
         );
         // console.log(response.data);
         setData(response.data);
+        console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
         // add error.message above ^
       }
     };
+
     const fetchSimilarGames = async () => {
       try {
         const response = await axios.get(
@@ -61,10 +69,12 @@ const Game = () => {
         console.log(error.response);
       }
     };
+
     fetchReviews();
     fetchSimilarGames();
     fetchGame();
   }, [id]);
+
   return isLoading ? (
     <p>Loading...</p>
   ) : (
@@ -81,25 +91,32 @@ const Game = () => {
                 <div className="btn-container">
                   <button
                     className="btn"
-                    onClick={async () => {
-                      try {
-                        const response = await axios.post(
-                          "http://localhost:4500/addfavourites",
+                    onClick={
+                      token
+                        ? async () => {
+                            try {
+                              setSavedName([...data.name].join(""));
+                              setSavedImg([...data.background_image].join(""));
+                              const response = await axios.post(
+                                "http://localhost:4500/addfavourites",
 
-                          {
-                            name: data.name,
-                            image: data.background_image,
+                                {
+                                  name: savedName,
+                                  image: savedImg,
+                                  user: token,
+                                }
+                              );
+
+                              // alert("Added to Collection");
+                              setSaved(true);
+                              // navigate("/favourites");
+                              console.log(response);
+                            } catch (error) {
+                              console.log(error.message);
+                            }
                           }
-                        );
-
-                        // alert("Added to Collection");
-                        setSaved(true);
-                        // navigate("/favourites");
-                        console.log(response);
-                      } catch (error) {
-                        console.log(error.message);
-                      }
-                    }}
+                        : navigate("/login")
+                    }
                   >
                     <div>
                       {saved ? (
@@ -148,7 +165,7 @@ const Game = () => {
               </div>
               <div className="second-info-block">
                 <div className="btn-container">
-                  <Link to={`/review/${data.id}`}>
+                  <Link to={token ? `/review/${data.id}` : "/login"}>
                     <button className="btn">
                       <div>
                         <p className="add">Add a</p>
