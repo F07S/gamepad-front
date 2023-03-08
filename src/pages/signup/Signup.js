@@ -10,7 +10,8 @@ const Signup = ({ handleToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [picture, setPicture] = useState();
+  const [picture, setPicture] = useState({});
+  const [displayPic, setDisplayPic] = useState();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -39,15 +40,22 @@ const Signup = ({ handleToken }) => {
       if (password !== confirmPassword) {
         return setErrorMessage("Your passwords don't match.");
       }
-
+      const formData = new FormData();
+      formData.append("username", userName);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("picture", picture);
+      console.log(picture);
       const response = await axios.post(
         "http://localhost:4500/signup",
+        formData
 
-        {
-          username: userName,
-          email: email,
-          password: password,
-        }
+        // {
+        //   username: userName,
+        //   email: email,
+        //   password: password,
+        //   avatar: picture,
+        // }
       );
       console.log(response.data);
       const token = response.data.token;
@@ -56,6 +64,7 @@ const Signup = ({ handleToken }) => {
         // Cookies.set("token", token, { expires: 10 });
         handleToken(token);
         navigate("/");
+        window.location.reload(false);
       }
     } catch (error) {
       console.log(error.response.data);
@@ -132,7 +141,29 @@ const Signup = ({ handleToken }) => {
                 onChange={handleConfirmPasswordChange}
                 value={confirmPassword}
               />
-
+              <div className="upload-container">
+                {!displayPic && (
+                  <label htmlFor="file">Add a profile picture</label>
+                )}
+                <input
+                  id="file"
+                  style={{ display: "none" }}
+                  type="file"
+                  onChange={(event) => {
+                    // const profile = event.target.files[0];
+                    setDisplayPic(event.target.files[0]);
+                    setPicture(event.target.files[0]);
+                    console.log(picture);
+                  }}
+                />
+                {displayPic && (
+                  <img
+                    className="upload-img"
+                    src={URL.createObjectURL(displayPic)}
+                    alt=""
+                  />
+                )}
+              </div>
               <button>Sign up</button>
               {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
               <span

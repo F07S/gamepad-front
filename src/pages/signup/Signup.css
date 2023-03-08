@@ -17,7 +17,7 @@
 
 .signup-box {
   width: 270px;
-  height: 380px;
+  height: 450px;
   display: flex;
   border-left: 1px solid #f04555;
   border-top-right-radius: 15px;
@@ -33,7 +33,7 @@
 
 .member-info-box {
   width: 270px;
-  height: 380px;
+  height: 450px;
   display: flex;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
@@ -102,7 +102,6 @@
   font-family: "Inter", sans-serif;
   color: white;
   border: none;
-  margin-top: 40px;
   width: 270px;
   height: 40px;
   border-radius: 10px;
@@ -111,4 +110,20 @@
 .signup-box .connect-here {
   font-size: 12px;
   font-family: "Inter", sans-serif;
+}
+.upload-container {
+  border: 1px dotted #f04555;
+  width: 270px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upload-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50px;
+  object-position: top;
 }

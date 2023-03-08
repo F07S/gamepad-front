@@ -53,12 +53,16 @@
   border: none;
   color: #f04555;
   border-radius: 50px;
+  background-color: white;
   font-size: 15px;
   position: absolute;
   margin-top: 10px;
   margin-left: 120px;
 }
 
+.trash-btn:hover {
+  background-color: rgb(181, 180, 180);
+}
 .red-star {
   color: #f04555;
 }

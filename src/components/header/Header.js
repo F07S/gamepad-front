@@ -1,8 +1,29 @@
 import logo from "../../img/logo.png";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Header = ({ handleToken }) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const token = Cookies.get("token");
+      console.log(token);
+      try {
+        const response = await axios.get(`http://localhost:4500/user`);
+        console.log(response.data.user);
+        setData(response.data.user);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+
+    fetchUsers();
+  }, []);
   const token = Cookies.get("token");
   return (
     <div className="background">
@@ -34,6 +55,24 @@ const Header = ({ handleToken }) => {
                 <button className="page-btn">Log in</button>
               </Link>
             </>
+          )}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            token &&
+            data.map((user) => {
+              return (
+                token === user.token && (
+                  <div>
+                    <img
+                      className="profile-img"
+                      src={user.account.avatar.secure_url}
+                      alt=""
+                    />
+                  </div>
+                )
+              );
+            })
           )}
         </nav>
       </header>
