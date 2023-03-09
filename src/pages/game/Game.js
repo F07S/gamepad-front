@@ -2,8 +2,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import LinesEllipsis from "react-lines-ellipsis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Similargames from "../../components/similargames/Similargames";
 import Cookies from "js-cookie";
 import axios from "axios";
+
 const Game = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -17,17 +19,11 @@ const Game = () => {
   const token = Cookies.get("token");
   console.log(token);
   // USER DATA STATES
-  const [userData, setUserData] = useState();
+  // const [userData, setUserData] = useState();
   const [userId, setUserId] = useState();
-
-  const [userDBToken, setUserDBToken] = useState();
 
   // Navigate
   const navigate = useNavigate();
-
-  // SIMILAR GAMES USESTATES
-  const [simData, setSimData] = useState();
-  const [isLoadingSim, setIsLoadingSim] = useState(true);
 
   const params = useParams();
   const id = params.id;
@@ -42,6 +38,7 @@ const Game = () => {
         );
         // console.log(response.data);
         setData(response.data);
+
         // console.log(data);
         setIsLoading(false);
       } catch (error) {
@@ -50,21 +47,6 @@ const Game = () => {
       }
     };
 
-    const fetchSimilarGames = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:4500/game-series/${id}`
-          // `https://api.rawg.io/api/games/${id}/game-series?key=`
-        );
-        // console.log(response.data);
-
-        setSimData(response.data);
-        setIsLoadingSim(false);
-      } catch (error) {
-        console.log(error.response);
-        // add error.message above ^
-      }
-    };
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/allreviews`);
@@ -80,14 +62,10 @@ const Game = () => {
       try {
         const response = await axios.get(`http://localhost:4500/user`);
         console.log(response.data);
-        setUserData(response.data);
-        console.log(userData);
-        userData.user.map((user) => {
-          if (token === user.token) {
-            setUserId(user._id);
-            console.log(userId);
-          }
-        });
+        const foundUser = response.data.user.find(
+          (user) => user.token === token
+        );
+        setUserId(foundUser._id);
       } catch (error) {
         console.log(error.response);
       }
@@ -95,7 +73,6 @@ const Game = () => {
 
     fetchUser();
     fetchReviews();
-    fetchSimilarGames();
     fetchGame();
   }, [id]);
 
@@ -117,10 +94,12 @@ const Game = () => {
                     className="btn"
                     onClick={async () => {
                       try {
+                        console.log(userId);
                         const response = await axios.put(
                           `http://localhost:4500/user/update/${userId}`,
 
                           {
+                            id: data.id,
                             name: data.name,
                             image: data.background_image,
                           }
@@ -239,54 +218,44 @@ const Game = () => {
             </div>
           </div>
         </section>
-        {isLoadingSim ? (
-          <p>Loading...</p>
-        ) : (
-          <div>
-            <div className="game-like-section">
-              {simData.count !== 0 && (
-                <p className="game-name">Games like {data.name}</p>
-              )}
-            </div>
-            <section className="similar-game-section">
-              {simData.results.map((simGame) => {
-                return (
-                  <div key={simGame.id} className="game-card">
-                    <Link to={`/game/${simGame.id}`}>
-                      <img
-                        className="sim-img"
-                        src={simGame.background_image}
-                        alt=""
-                      />
-                    </Link>
 
-                    <p>{simGame.name}</p>
-                  </div>
-                );
-              })}
-            </section>
-            <section className="review-section">
-              <p className="game-name">Reviews for {data.name}</p>
-              {!reviewsData ? (
-                <p className="game-name">No reviews yet</p>
-              ) : (
-                reviewsData.reviews.map((review) => {
-                  return isReviewLoading ? (
-                    <p>Loading reviews...</p>
-                  ) : (
-                    data.id === review.gameId && (
-                      <div className="review-card">
-                        {/* <p className="info-label">{review.gameId} </p> */}
-                        <p className="review-label">{review.title} </p>
-                        <p className="info">{review.review} </p>
-                      </div>
-                    )
-                  );
-                })
-              )}
-            </section>
+        <div>
+          <div className="game-like-section">
+            <p className="game-name">Games like {data.name}</p>
           </div>
-        )}
+          <Similargames gameId={id} />
+          <section className="review-section">
+            <p className="game-name">Reviews for {data.name}</p>
+            {!reviewsData ? (
+              <p className="game-name">No reviews yet</p>
+            ) : (
+              reviewsData.reviews.map((review) => {
+                return isReviewLoading ? (
+                  <p>Loading reviews...</p>
+                ) : (
+                  data.id === review.gameId && (
+                    <div className="review-card">
+                      {/* <p className="info-label">{review.gameId} </p> */}
+                      <p className="review-label">{review.title} </p>
+                      <p className="info">{review.review} </p>
+                      <div className="reviewer-profile">
+                        <img
+                          className="profile-img-review"
+                          src={review.userimage}
+                          alt=""
+                        />
+                        <div className="review-name-date">
+                          <p className="info-date">09/03/23</p>
+                          <p className="user-label">{review.user} </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                );
+              })
+            )}
+          </section>
+        </div>
       </section>
     </main>
   );

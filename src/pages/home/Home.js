@@ -28,6 +28,7 @@ const Home = () => {
         console.log(error);
       }
     };
+
     fetchData();
   }, [pageNo]);
 

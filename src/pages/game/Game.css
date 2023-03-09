@@ -106,3 +106,30 @@
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.reviewer-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-img-review {
+  width: 40px;
+  height: 40px;
+  margin-top: 10px;
+  object-fit: cover;
+  border-radius: 50px;
+  object-position: top;
+  border: 1px solid #7e7e81;
+}
+
+.user-label {
+  /* margin-bottom: 10px; */
+  font-size: 13px;
+}
+
+.info-date {
+  color: #7b7b87;
+  font-size: 10px;
+  margin-bottom: 3px;
+}

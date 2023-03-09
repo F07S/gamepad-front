@@ -6,8 +6,11 @@ import axios from "axios";
 
 const Favourites = () => {
   const [data, setData] = useState();
-
   const [isLoading, setIsLoading] = useState(true);
+
+  // USER DATA STATES
+  // const [userData, setUserData] = useState();
+  const [userId, setUserId] = useState();
 
   // const navigate = useNavigate();
 
@@ -18,9 +21,14 @@ const Favourites = () => {
   useEffect(() => {
     const fetchFavourites = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/favourites`);
+        const response = await axios.get(`http://localhost:4500/user`);
         console.log(response.data);
-        setData(response.data);
+        const foundUser = response.data.user.find(
+          (user) => user.token === token
+        );
+        setData(foundUser);
+        setUserId(foundUser._id);
+        console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -38,32 +46,44 @@ const Favourites = () => {
         <p className="title-collection">My Collection</p>
         <section className="favourites">
           {data.favourites.map((fav) => {
-            // console.log(fav.image.join(""));
+            // console.log(fav.id);
             return (
-              token === fav.user && (
-                <section className="game-container">
-                  <div className="favourite-card" key={fav._id}>
-                    <img className="sim-img" src={fav.image} alt="character" />
-                    <p className="fav-name">{fav.name}</p>
-                    <button
-                      className="trash-btn"
-                      onClick={async () => {
-                        try {
-                          const response = await axios.delete(
-                            `http://localhost:4500/favourites/delete/${fav._id}`
-                          );
-                          setData(response.data);
-                          // console.log(response.data);
-                        } catch (error) {
-                          console.log(error.response.data);
-                        }
-                      }}
-                    >
-                      <FontAwesomeIcon icon="trash-can" />
-                    </button>
-                  </div>
-                </section>
-              )
+              <section className="game-container">
+                <div className="favourite-card" key={fav.id}>
+                  <img className="sim-img" src={fav.image} alt="character" />
+                  <p className="fav-name">{fav.name}</p>
+                  <button
+                    className="trash-btn"
+                    onClick={async () => {
+                      try {
+                        console.log(userId);
+                        const response = await axios.put(
+                          `http://localhost:4500/user/deletefav/${userId}`,
+
+                          {
+                            id: fav.id,
+                            name: fav.name,
+                            image: fav.image,
+                          }
+                        );
+                        const responseUpdate = await axios.get(
+                          `http://localhost:4500/user`
+                        );
+                        console.log(responseUpdate.data);
+                        const foundUser = responseUpdate.data.user.find(
+                          (user) => user.token === token
+                        );
+                        setData(foundUser);
+                        console.log(response);
+                      } catch (error) {
+                        console.log(error.response);
+                      }
+                    }}
+                  >
+                    <FontAwesomeIcon icon="trash-can" />
+                  </button>
+                </div>
+              </section>
             );
           })}
         </section>

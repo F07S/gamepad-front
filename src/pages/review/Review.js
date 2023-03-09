@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import Cookies from "js-cookie";
 import axios from "axios";
 const Review = () => {
   const [data, setData] = useState();
@@ -8,9 +8,15 @@ const Review = () => {
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
 
+  const [userData, setUserData] = useState();
+
   const params = useParams();
   const id = params.id;
   console.log(id);
+
+  // USER TOKEN
+  const token = Cookies.get("token");
+  console.log(token);
 
   // Navigate
   const navigate = useNavigate();
@@ -28,6 +34,23 @@ const Review = () => {
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4500/user`);
+        console.log(response.data);
+        const foundUser = response.data.user.find(
+          (user) => user.token === token
+        );
+        // console.log(foundUser);
+        setUserData(foundUser);
+        // console.log(userData.username);
+        // console.log(userData.account.avatar.secure_url);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+
+    fetchUser();
     fetchGame();
   }, [id]);
 
@@ -51,6 +74,8 @@ const Review = () => {
           review: review,
           game: data.name,
           gameId: data.id,
+          user: userData.username,
+          userimage: userData.account.avatar.secure_url,
         }
       );
       setReviewsData(response.data);
