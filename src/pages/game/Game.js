@@ -10,11 +10,17 @@ const Game = () => {
   const [reviewsData, setReviewsData] = useState();
   const [isReviewLoading, setIsReviewLoading] = useState(true);
   const [saved, setSaved] = useState();
-  const [savedName, setSavedName] = useState();
-  const [savedImg, setSavedImg] = useState();
+  // const [savedName, setSavedName] = useState();
+  // const [savedImg, setSavedImg] = useState();
 
   // USER TOKEN
   const token = Cookies.get("token");
+  console.log(token);
+  // USER DATA STATES
+  const [userData, setUserData] = useState();
+  const [userId, setUserId] = useState();
+
+  const [userDBToken, setUserDBToken] = useState();
 
   // Navigate
   const navigate = useNavigate();
@@ -25,7 +31,7 @@ const Game = () => {
 
   const params = useParams();
   const id = params.id;
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -36,7 +42,7 @@ const Game = () => {
         );
         // console.log(response.data);
         setData(response.data);
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -62,7 +68,7 @@ const Game = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/allreviews`);
-        console.log(response.data);
+        // console.log(response.data);
         setReviewsData(response.data);
         setIsReviewLoading(false);
       } catch (error) {
@@ -70,6 +76,24 @@ const Game = () => {
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4500/user`);
+        console.log(response.data);
+        setUserData(response.data);
+        console.log(userData);
+        userData.user.map((user) => {
+          if (token === user.token) {
+            setUserId(user._id);
+            console.log(userId);
+          }
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+
+    fetchUser();
     fetchReviews();
     fetchSimilarGames();
     fetchGame();
@@ -91,32 +115,22 @@ const Game = () => {
                 <div className="btn-container">
                   <button
                     className="btn"
-                    onClick={
-                      token
-                        ? async () => {
-                            try {
-                              setSavedName([...data.name].join(""));
-                              setSavedImg([...data.background_image].join(""));
-                              const response = await axios.post(
-                                "http://localhost:4500/addfavourites",
+                    onClick={async () => {
+                      try {
+                        const response = await axios.put(
+                          `http://localhost:4500/user/update/${userId}`,
 
-                                {
-                                  name: savedName,
-                                  image: savedImg,
-                                  user: token,
-                                }
-                              );
-
-                              // alert("Added to Collection");
-                              setSaved(true);
-                              // navigate("/favourites");
-                              console.log(response);
-                            } catch (error) {
-                              console.log(error.message);
-                            }
+                          {
+                            name: data.name,
+                            image: data.background_image,
                           }
-                        : navigate("/login")
-                    }
+                        );
+
+                        console.log(response);
+                      } catch (error) {
+                        console.log(error.response);
+                      }
+                    }}
                   >
                     <div>
                       {saved ? (
@@ -165,7 +179,7 @@ const Game = () => {
               </div>
               <div className="second-info-block">
                 <div className="btn-container">
-                  <Link to={token ? `/review/${data.id}` : "/login"}>
+                  <Link to={`/review/${data.id}`}>
                     <button className="btn">
                       <div>
                         <p className="add">Add a</p>
