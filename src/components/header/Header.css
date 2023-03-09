@@ -53,3 +53,7 @@ header {
   object-position: top;
   border: 1px solid #7e7e81;
 }
+
+.profile-img-name {
+  display: flex;
+}

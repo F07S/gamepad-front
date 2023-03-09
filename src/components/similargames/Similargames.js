@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-const Similargames = ({ gameId }) => {
+const Similargames = ({ gameId, gameName }) => {
   // SIMILAR GAMES USESTATES
   const [simData, setSimData] = useState();
   const [isLoadingSim, setIsLoadingSim] = useState(true);
@@ -16,7 +16,6 @@ const Similargames = ({ gameId }) => {
           // `https://api.rawg.io/api/games/${id}/game-series?key=`
         );
         console.log(response.data);
-
         setSimData(response.data);
         setIsLoadingSim(false);
       } catch (error) {
@@ -31,18 +30,27 @@ const Similargames = ({ gameId }) => {
   return isLoadingSim ? (
     <p>Loading...</p>
   ) : (
-    <section className="similar-game-section">
-      {simData.results.map((simGame) => {
-        return (
-          <div key={simGame.id} className="game-card">
-            <Link to={`/game/${simGame.id}`}>
-              <img className="sim-img" src={simGame.background_image} alt="" />
-            </Link>
+    <section className="similar-game-box">
+      {simData.count > 0 ? (
+        <p className="game-name">Games like {gameName}</p>
+      ) : null}
+      <section className="similar-game-section">
+        {simData.results.map((simGame) => {
+          return (
+            <div key={simGame.id} className="game-card">
+              <Link to={`/game/${simGame.id}`}>
+                <img
+                  className="sim-img"
+                  src={simGame.background_image}
+                  alt=""
+                />
+              </Link>
 
-            <p>{simGame.name}</p>
-          </div>
-        );
-      })}
+              <p>{simGame.name}</p>
+            </div>
+          );
+        })}
+      </section>
     </section>
   );
 };

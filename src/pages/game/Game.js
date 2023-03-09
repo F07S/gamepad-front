@@ -11,15 +11,12 @@ const Game = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState();
   const [isReviewLoading, setIsReviewLoading] = useState(true);
-  const [saved, setSaved] = useState();
-  // const [savedName, setSavedName] = useState();
-  // const [savedImg, setSavedImg] = useState();
+  const [saved, setSaved] = useState(false);
 
   // USER TOKEN
   const token = Cookies.get("token");
   console.log(token);
   // USER DATA STATES
-  // const [userData, setUserData] = useState();
   const [userId, setUserId] = useState();
 
   // Navigate
@@ -50,7 +47,7 @@ const Game = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/allreviews`);
-        // console.log(response.data);
+        console.log(response.data);
         setReviewsData(response.data);
         setIsReviewLoading(false);
       } catch (error) {
@@ -61,7 +58,7 @@ const Game = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/user`);
-        console.log(response.data);
+        // console.log(response.data);
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
@@ -104,10 +101,15 @@ const Game = () => {
                             image: data.background_image,
                           }
                         );
-
+                        setSaved(true);
                         console.log(response);
                       } catch (error) {
-                        console.log(error.response);
+                        console.log(error.message);
+                        if (
+                          (error.response.data.message = "Missing parameters")
+                        ) {
+                          navigate("/login");
+                        }
                       }
                     }}
                   >
@@ -158,7 +160,7 @@ const Game = () => {
               </div>
               <div className="second-info-block">
                 <div className="btn-container">
-                  <Link to={`/review/${data.id}`}>
+                  <Link to={token ? `/review/${data.id}` : "/login"}>
                     <button className="btn">
                       <div>
                         <p className="add">Add a</p>
@@ -220,40 +222,33 @@ const Game = () => {
         </section>
 
         <div>
-          <div className="game-like-section">
-            <p className="game-name">Games like {data.name}</p>
-          </div>
-          <Similargames gameId={id} />
+          <div className="game-like-section"></div>
+          <Similargames gameId={id} gameName={data.name} />
           <section className="review-section">
             <p className="game-name">Reviews for {data.name}</p>
-            {!reviewsData ? (
-              <p className="game-name">No reviews yet</p>
-            ) : (
-              reviewsData.reviews.map((review) => {
-                return isReviewLoading ? (
-                  <p>Loading reviews...</p>
-                ) : (
-                  data.id === review.gameId && (
-                    <div className="review-card">
-                      {/* <p className="info-label">{review.gameId} </p> */}
-                      <p className="review-label">{review.title} </p>
-                      <p className="info">{review.review} </p>
-                      <div className="reviewer-profile">
-                        <img
-                          className="profile-img-review"
-                          src={review.userimage}
-                          alt=""
-                        />
-                        <div className="review-name-date">
-                          <p className="info-date">09/03/23</p>
-                          <p className="user-label">{review.user} </p>
-                        </div>
+            {reviewsData.reviews.map((review) => {
+              return isReviewLoading ? (
+                <p>Loading reviews...</p>
+              ) : (
+                data.id === review.gameId && (
+                  <div className="review-card">
+                    <p className="review-label">{review.title} </p>
+                    <p className="info">{review.review} </p>
+                    <div className="reviewer-profile">
+                      <img
+                        className="profile-img-review"
+                        src={review.userimage}
+                        alt=""
+                      />
+                      <div className="review-name-date">
+                        <p className="info-date">09/03/23</p>
+                        <p className="user-label">{review.user} </p>
                       </div>
                     </div>
-                  )
-                );
-              })
-            )}
+                  </div>
+                )
+              );
+            })}
           </section>
         </div>
       </section>

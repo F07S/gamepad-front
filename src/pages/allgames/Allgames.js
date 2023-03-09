@@ -414,7 +414,7 @@ const Allgames = () => {
                         />
                       </Link>
                       <p className="name">{game.name}</p>
-                      <p className="name">{game.released}</p>
+                      {/* <p className="name">{game.released}</p> */}
                     </div>
                   );
                 })}

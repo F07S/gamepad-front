@@ -72,7 +72,8 @@ const Header = ({ handleToken }) => {
             data.map((user) => {
               return (
                 token === user.token && (
-                  <div>
+                  <div className="profile-img-name">
+                    <button className="page-btn">{user.username}</button>
                     <img
                       className="profile-img"
                       src={user.account.avatar.secure_url}
