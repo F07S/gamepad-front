@@ -17,7 +17,7 @@ header {
 }
 
 .logo-header {
-  max-height: 35px;
+  max-height: 30px;
   margin-left: 30px;
 }
 
@@ -45,13 +45,13 @@ header {
 }
 
 .profile-img {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin-left: 20px;
   object-fit: cover;
   border-radius: 50px;
   object-position: top;
-  border: 1px solid #7e7e81;
+  /* border: 1px solid #7e7e81; */
 }
 
 .profile-img-name {

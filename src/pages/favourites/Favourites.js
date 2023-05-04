@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -9,10 +9,7 @@ const Favourites = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // USER DATA STATES
-  // const [userData, setUserData] = useState();
   const [userId, setUserId] = useState();
-
-  // const navigate = useNavigate();
 
   // USER TOKEN
   const token = Cookies.get("token");
@@ -22,13 +19,13 @@ const Favourites = () => {
     const fetchFavourites = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/user`);
-        console.log(response.data);
+        // console.log(response.data);
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
         setData(foundUser);
         setUserId(foundUser._id);
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -36,8 +33,9 @@ const Favourites = () => {
     };
 
     fetchFavourites();
-  }, []);
+  }, [token]);
 
+  console.log(data);
   return isLoading ? (
     <p>Loading...</p>
   ) : (
@@ -50,13 +48,15 @@ const Favourites = () => {
             return (
               <section className="game-container">
                 <div className="favourite-card" key={fav.id}>
-                  <img className="sim-img" src={fav.image} alt="character" />
+                  <Link to={`/game/${fav.id}`}>
+                    <img className="sim-img" src={fav.image} alt="character" />
+                  </Link>
                   <p className="fav-name">{fav.name}</p>
                   <button
                     className="trash-btn"
                     onClick={async () => {
                       try {
-                        console.log(userId);
+                        // console.log(userId);
                         const response = await axios.put(
                           `http://localhost:4500/user/deletefav/${userId}`,
 

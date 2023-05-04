@@ -89,6 +89,9 @@
   margin-left: 60px;
 }
 
+.noRevP {
+  color: aliceblue;
+}
 .review-section {
   width: 950px;
   gap: 20px;

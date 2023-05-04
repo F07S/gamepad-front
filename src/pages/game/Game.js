@@ -11,7 +11,8 @@ const Game = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState();
   const [isReviewLoading, setIsReviewLoading] = useState(true);
-  const [saved, setSaved] = useState(false);
+
+  const [savedFav, setSavedFav] = useState(false);
 
   // USER TOKEN
   const token = Cookies.get("token");
@@ -35,12 +36,9 @@ const Game = () => {
         );
         // console.log(response.data);
         setData(response.data);
-
-        // console.log(data);
         setIsLoading(false);
       } catch (error) {
-        console.log(error.response);
-        // add error.message above ^
+        console.log(error.message);
       }
     };
 
@@ -63,6 +61,14 @@ const Game = () => {
           (user) => user.token === token
         );
         setUserId(foundUser._id);
+        // console.log(typeof id);
+        const gameId = Number(id);
+        // console.log(gameId);
+        const favourite = foundUser.favourites.find((fav) => fav.id === gameId);
+        // console.log(favourite);
+        if (favourite) {
+          setSavedFav(true);
+        }
       } catch (error) {
         console.log(error.response);
       }
@@ -71,7 +77,7 @@ const Game = () => {
     fetchUser();
     fetchReviews();
     fetchGame();
-  }, [id]);
+  }, [id, token]);
 
   return isLoading ? (
     <p>Loading...</p>
@@ -101,8 +107,9 @@ const Game = () => {
                             image: data.background_image,
                           }
                         );
-                        setSaved(true);
+
                         console.log(response);
+                        // setSavedFav(true);
                       } catch (error) {
                         console.log(error.message);
                         if (
@@ -114,7 +121,7 @@ const Game = () => {
                     }}
                   >
                     <div>
-                      {saved ? (
+                      {savedFav ? (
                         <p className="add">Saved to</p>
                       ) : (
                         <p className="add">Add to</p>
@@ -122,7 +129,7 @@ const Game = () => {
 
                       <p className="category">Collection</p>
                     </div>
-                    {saved ? (
+                    {savedFav ? (
                       <div className="red-star">
                         <FontAwesomeIcon icon="star" />
                       </div>
@@ -160,7 +167,10 @@ const Game = () => {
               </div>
               <div className="second-info-block">
                 <div className="btn-container">
-                  <Link to={token ? `/review/${data.id}` : "/login"}>
+                  <Link
+                    to={token ? `/review/${data.id}` : "/login"}
+                    onClick={() => {}}
+                  >
                     <button className="btn">
                       <div>
                         <p className="add">Add a</p>

@@ -72,7 +72,7 @@ const Header = ({ handleToken }) => {
             data.map((user) => {
               return (
                 token === user.token && (
-                  <div className="profile-img-name">
+                  <div className="profile-img-name" key={user._id}>
                     <button className="page-btn">{user.username}</button>
                     <img
                       className="profile-img"
