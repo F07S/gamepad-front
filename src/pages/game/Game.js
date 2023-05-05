@@ -40,8 +40,8 @@ const Game = () => {
     const fetchGame = async () => {
       try {
         const response = await axios.get(
-          // `https://api.rawg.io/api/games/${id}?key=`
-          `http://localhost:4500/game/${id}`
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/game/${id}`
+          // `http://localhost:4500/game/${id}`
         );
 
         setData(response.data);
@@ -53,7 +53,10 @@ const Game = () => {
 
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/allreviews`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/allreviews`
+          // `http://localhost:4500/allreviews`
+        );
         console.log(response.data);
         setReviewsData(response.data);
         setIsReviewLoading(false);
@@ -72,7 +75,10 @@ const Game = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/user`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user`
+          // `http://localhost:4500/user`
+        );
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
@@ -116,7 +122,8 @@ const Game = () => {
                       toast(`${data.name} added to your collection!`);
                       try {
                         const response = await axios.put(
-                          `http://localhost:4500/user/update/${userId}`,
+                          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user/update/${userId}`,
+                          // `http://localhost:4500/user/update/${userId}`,
 
                           {
                             id: data.id,

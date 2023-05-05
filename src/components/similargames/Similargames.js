@@ -16,8 +16,8 @@ const Similargames = ({ gameId, gameName, setSavedFav }) => {
     const fetchSimilarGames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4500/game-series/${id}`
-          // `https://api.rawg.io/api/games/${id}/game-series?key=`
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/game-series/${id}`
+          // `http://localhost:4500/game-series/${id}`
         );
         console.log(response.data);
         setSimData(response.data);

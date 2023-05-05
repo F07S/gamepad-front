@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import symbol from "../../img/symbol.png";
 
 const Signup = ({ handleToken }) => {
   //Signup input states
@@ -47,21 +46,14 @@ const Signup = ({ handleToken }) => {
       formData.append("picture", picture);
       console.log(picture);
       const response = await axios.post(
-        "http://localhost:4500/signup",
+        "https://site--gamepad-backend--phfc9s47kbj5.code.run/signup",
+        // "http://localhost:4500/signup",
         formData
-
-        // {
-        //   username: userName,
-        //   email: email,
-        //   password: password,
-        //   avatar: picture,
-        // }
       );
       console.log(response.data);
       const token = response.data.token;
 
       if (token) {
-        // Cookies.set("token", token, { expires: 10 });
         handleToken(token);
         navigate("/");
         window.location.reload(false);
@@ -109,7 +101,6 @@ const Signup = ({ handleToken }) => {
                   Write a public review on a game for other members to rate
                 </p>
               </div>
-              {/* <img className="symbol" src={symbol} alt="" /> */}
             </div>
             <div className="signup-box">
               <h1>Sign up</h1>
@@ -150,7 +141,6 @@ const Signup = ({ handleToken }) => {
                   style={{ display: "none" }}
                   type="file"
                   onChange={(event) => {
-                    // const profile = event.target.files[0];
                     setDisplayPic(event.target.files[0]);
                     setPicture(event.target.files[0]);
                     console.log(picture);

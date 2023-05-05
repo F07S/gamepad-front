@@ -21,7 +21,10 @@ const Favourites = () => {
   useEffect(() => {
     const fetchFavourites = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/user`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user`
+          // `http://localhost:4500/user`
+        );
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
@@ -60,7 +63,8 @@ const Favourites = () => {
                     onClick={async () => {
                       try {
                         const response = await axios.put(
-                          `http://localhost:4500/user/deletefav/${userId}`,
+                          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user/deletefav/${userId}`,
+                          // `http://localhost:4500/user/deletefav/${userId}`,
 
                           {
                             id: fav.id,
@@ -69,7 +73,8 @@ const Favourites = () => {
                           }
                         );
                         const responseUpdate = await axios.get(
-                          `http://localhost:4500/user`
+                          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user`
+                          // `http://localhost:4500/user`
                         );
 
                         const foundUser = responseUpdate.data.user.find(

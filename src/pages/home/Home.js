@@ -17,8 +17,8 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4500?page=${pageNo}`
-          // `https://api.rawg.io/api/games?key=&dates=2022-12-01,2023-11-30&platforms=18,1,7&page=${pageNo}`
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run?page=${pageNo}`
+          // `http://localhost:4500?page=${pageNo}`
         );
         // console.log(response.data.count);
         setGameCount(response.data.count);

@@ -44,7 +44,8 @@ const Allgames = () => {
         // IF THE TYPE & PLATFORM & SORT FILTERS ARE NOT SELECTED
         if (!type && !platform && !sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}`
           );
 
           setGameCount(response.data.count);
@@ -55,7 +56,8 @@ const Allgames = () => {
         if (type && !platform && !sort) {
           console.log(type);
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&genres=${type}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}`
           );
 
           setGameCount(response.data.count);
@@ -65,7 +67,8 @@ const Allgames = () => {
         // IF THE TYPE & PLATFORM FILTERS ARE SELECTED BUT NOT SORT
         if (type && platform && !sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}`
           );
 
           setGameCount(response.data.count);
@@ -76,7 +79,8 @@ const Allgames = () => {
         // IF THE TYPE & PLATFORM FILTERS ARE NOT SELECTED bUT SORT IS SELECTED
         if (!type && !platform && sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&ordering=${sort}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&ordering=${sort}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&ordering=${sort}`
           );
 
           setGameCount(response.data.count);
@@ -86,7 +90,8 @@ const Allgames = () => {
         // IF THE TYPE IS NOT SELECTED & PLATFORM IS SELECTED
         if (!type && platform) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&platforms=${platform}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}`
           );
 
           setGameCount(response.data.count);
@@ -97,7 +102,8 @@ const Allgames = () => {
         // IF THE TYPE & SORT ARE SELECTED & PLATFORM IS NOT SELECTED
         if (type && !platform && sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&ordering=${sort}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&genres=${type}&ordering=${sort}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&ordering=${sort}`
           );
 
           setGameCount(response.data.count);
@@ -107,7 +113,8 @@ const Allgames = () => {
         // IF THE PLATFORM & SORT ARE SELECTED BUT TYPE IS NOT SELECTED
         if (!type && platform && sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}&ordering=${sort}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&platforms=${platform}&ordering=${sort}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}&ordering=${sort}`
           );
 
           setGameCount(response.data.count);
@@ -117,7 +124,8 @@ const Allgames = () => {
         // IF THE TYPE & PLATFORM & SORT FILTERS ARE SELECTED
         if (type && platform && sort) {
           const response = await axios.get(
-            `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}&ordering=${sort}`
+            `https://site--gamepad-backend--phfc9s47kbj5.code.run/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}&ordering=${sort}`
+            // `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}&ordering=${sort}`
           );
 
           setGameCount(response.data.count);
@@ -131,7 +139,10 @@ const Allgames = () => {
     // GENRE DATA GET REQUEST
     const fetchGenreData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/genres`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/genres`
+          // `http://localhost:4500/genres`
+        );
         setIsLoadingGenre(false);
         setGenreData(response.data);
       } catch (error) {
@@ -142,7 +153,10 @@ const Allgames = () => {
     // PLATFORM DATA GET REQUEST
     const fetchPlatformData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/platforms`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/platforms`
+          // `http://localhost:4500/platforms`
+        );
         setIsLoadingPlat(false);
         setPlatformData(response.data);
       } catch (error) {

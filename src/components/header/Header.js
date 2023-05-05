@@ -15,9 +15,12 @@ const Header = ({ handleToken }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = Cookies.get("token");
-      // console.log(token);
+      console.log(token);
       try {
-        const response = await axios.get(`http://localhost:4500/user`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user`
+          // `http://localhost:4500/user`
+        );
         // console.log(response.data.user);
         setData(response.data.user);
         setIsLoading(false);

@@ -17,6 +17,7 @@ const Review = () => {
   // USER TOKEN
   const token = Cookies.get("token");
   console.log(token);
+  console.log(reviewsData);
 
   // Navigate
   const navigate = useNavigate();
@@ -24,7 +25,10 @@ const Review = () => {
   useEffect(() => {
     const fetchGame = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/review/${id}`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/review/${id}`
+          // `http://localhost:4500/review/${id}`
+        );
         console.log(response.data);
         setData(response.data);
         // setIsLoading(false);
@@ -36,7 +40,10 @@ const Review = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:4500/user`);
+        const response = await axios.get(
+          `https://site--gamepad-backend--phfc9s47kbj5.code.run/user`
+          // `http://localhost:4500/user`
+        );
         console.log(response.data);
         const foundUser = response.data.user.find(
           (user) => user.token === token
@@ -52,7 +59,7 @@ const Review = () => {
 
     fetchUser();
     fetchGame();
-  }, [id]);
+  }, [id, token]);
 
   const handleTitleChange = (event) => {
     event.preventDefault();
@@ -67,7 +74,8 @@ const Review = () => {
   const handleReviewSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4500/addreview",
+        "https://site--gamepad-backend--phfc9s47kbj5.code.run/addreview",
+        // "http://localhost:4500/addreview",
 
         {
           title: title,
