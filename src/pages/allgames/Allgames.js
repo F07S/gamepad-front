@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+
+//ACTIVITY INDICATOR
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
 
 // DROP DOWN
 import Dropdown from "react-bootstrap/Dropdown";
@@ -15,11 +18,13 @@ const Allgames = () => {
   const [gameCount, setGameCount] = useState();
   const [search, setSearch] = useState("");
   // GENRE USESTATES
+  const [isLoadingGenre, setIsLoadingGenre] = useState(true);
   const [genreData, setGenreData] = useState();
   const [type, setType] = useState("");
   const [genre, setGenre] = useState();
   const [showGenreMenu, setShowGenreMenu] = useState(false);
   // PLATFORM USESTATES
+  const [isLoadingPlat, setIsLoadingPlat] = useState(true);
   const [platformData, setPlatformData] = useState();
   const [platform, setPlatform] = useState("");
   const [platformName, setPlatformName] = useState();
@@ -31,7 +36,6 @@ const Allgames = () => {
   const [sortName, setSortName] = useState();
 
   const numberOfPages = Math.ceil(gameCount / 20);
-  // console.log(numberOfPages);
 
   useEffect(() => {
     // MAIN REQUEST
@@ -41,13 +45,10 @@ const Allgames = () => {
         if (!type && !platform && !sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
         // IF THE TYPE IS SELECTED BUT THE PLATFORM & SORT ARE NOT SELECTED
@@ -55,26 +56,20 @@ const Allgames = () => {
           console.log(type);
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&genres=${type}`
           );
-          console.log(response.data);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
         // IF THE TYPE & PLATFORM FILTERS ARE SELECTED BUT NOT SORT
         if (type && platform && !sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
 
@@ -82,26 +77,20 @@ const Allgames = () => {
         if (!type && !platform && sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&ordering=${sort}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&ordering=${sort}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
         // IF THE TYPE IS NOT SELECTED & PLATFORM IS SELECTED
         if (!type && platform) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&platforms=${platform}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
 
@@ -109,39 +98,30 @@ const Allgames = () => {
         if (type && !platform && sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&ordering=${sort}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&genres=${type}&ordering=${sort}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
         // IF THE PLATFORM & SORT ARE SELECTED BUT TYPE IS NOT SELECTED
         if (!type && platform && sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&platforms=${platform}&ordering=${sort}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&platforms=${platform}&ordering=${sort}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
         // IF THE TYPE & PLATFORM & SORT FILTERS ARE SELECTED
         if (type && platform && sort) {
           const response = await axios.get(
             `http://localhost:4500/allgames?page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}&ordering=${sort}`
-            // `https://api.rawg.io/api/games?key=&page=${pageNo}&search=${search}&genres=${type}&platforms=${platform}&ordering=${sort}`
           );
-          // console.log(response.data.count);
+
           setGameCount(response.data.count);
-          // console.log(gameCount);
           setData(response.data);
-          // console.log(data);
           setIsLoading(false);
         }
       } catch (error) {
@@ -151,11 +131,8 @@ const Allgames = () => {
     // GENRE DATA GET REQUEST
     const fetchGenreData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4500/genres`
-          // `https://api.rawg.io/api/genres?key=`
-        );
-        // console.log(response.data);
+        const response = await axios.get(`http://localhost:4500/genres`);
+        setIsLoadingGenre(false);
         setGenreData(response.data);
       } catch (error) {
         console.log(error);
@@ -165,11 +142,8 @@ const Allgames = () => {
     // PLATFORM DATA GET REQUEST
     const fetchPlatformData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4500/platforms`
-          // `https://api.rawg.io/api/platforms?key=`
-        );
-        // console.log(response.data);
+        const response = await axios.get(`http://localhost:4500/platforms`);
+        setIsLoadingPlat(false);
         setPlatformData(response.data);
       } catch (error) {
         console.log(error);
@@ -220,26 +194,22 @@ const Allgames = () => {
                       onClick={() => {
                         setType(0);
                         setGenre("");
-                        // console.log(type);
                       }}
                     >
                       All
                     </button>
                   </Dropdown.Item>
-                  {isLoading ? (
-                    <p>Loading filters...</p>
+                  {isLoadingGenre ? (
+                    <Dots className="dots-activity-games" />
                   ) : (
                     genreData.results.map((genre) => {
-                      // console.log(genre.name);
                       return (
-                        <Dropdown.Item>
+                        <Dropdown.Item key={genre.id}>
                           <button
                             className="dd-btn"
-                            key={genre.id}
                             onClick={() => {
                               setType(genre.id);
                               setGenre(genre.name);
-                              // console.log(type);
                             }}
                           >
                             {genre.name}
@@ -271,26 +241,22 @@ const Allgames = () => {
                       onClick={() => {
                         setPlatform(0);
                         setPlatformName("");
-                        // console.log(type);
                       }}
                     >
                       All
                     </button>
                   </Dropdown.Item>
-                  {isLoading ? (
-                    <p>Loading filters...</p>
+                  {isLoadingPlat ? (
+                    <Dots className="dots-activity-games" />
                   ) : (
                     platformData.results.map((platform) => {
-                      // console.log(genre.name);
                       return (
-                        <Dropdown.Item>
+                        <Dropdown.Item key={platform.id}>
                           <button
                             className="dd-btn"
-                            key={platform.id}
                             onClick={() => {
                               setPlatform(platform.id);
                               setPlatformName(platform.name);
-                              // console.log(type);
                             }}
                           >
                             {platform.name}
@@ -322,7 +288,6 @@ const Allgames = () => {
                       onClick={() => {
                         setSort();
                         setSortName("");
-                        // console.log(type);
                       }}
                     >
                       Back to default
@@ -334,7 +299,6 @@ const Allgames = () => {
                       onClick={() => {
                         setSort("-metacritic");
                         setSortName("Popularity");
-                        // console.log(type);
                       }}
                     >
                       Popularity
@@ -346,7 +310,6 @@ const Allgames = () => {
                       onClick={() => {
                         setSort("name");
                         setSortName("Name");
-                        // console.log(type);
                       }}
                     >
                       Name
@@ -358,7 +321,6 @@ const Allgames = () => {
                       onClick={() => {
                         setSort("-rating");
                         setSortName("Rating");
-                        // console.log(type);
                       }}
                     >
                       Rating
@@ -370,7 +332,6 @@ const Allgames = () => {
                       onClick={() => {
                         setSort("-released");
                         setSortName("Release date");
-                        // console.log(type);
                       }}
                     >
                       Release date
@@ -399,7 +360,7 @@ const Allgames = () => {
             )}
           </div>
           {isLoading ? (
-            <p>Loading...</p>
+            <Dots className="dots-activity-games" />
           ) : (
             <div className="game-pagination">
               <section className="game-container">
@@ -414,7 +375,6 @@ const Allgames = () => {
                         />
                       </Link>
                       <p className="name">{game.name}</p>
-                      {/* <p className="name">{game.released}</p> */}
                     </div>
                   );
                 })}

@@ -1,7 +1,11 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-const Similargames = ({ gameId, gameName }) => {
+
+//ACTIVITY INDICATOR
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
+const Similargames = ({ gameId, gameName, setSavedFav }) => {
   // SIMILAR GAMES USESTATES
   const [simData, setSimData] = useState();
   const [isLoadingSim, setIsLoadingSim] = useState(true);
@@ -28,7 +32,7 @@ const Similargames = ({ gameId, gameName }) => {
   }, [id]);
 
   return isLoadingSim ? (
-    <p>Loading...</p>
+    <Dots className="dots-activity-games" />
   ) : (
     <section className="similar-game-box">
       {simData.count > 0 ? (
@@ -38,7 +42,12 @@ const Similargames = ({ gameId, gameName }) => {
         {simData.results.map((simGame) => {
           return (
             <div key={simGame.id} className="game-card">
-              <Link to={`/game/${simGame.id}`}>
+              <Link
+                to={`/game/${simGame.id}`}
+                onClick={() => {
+                  setSavedFav(false);
+                }}
+              >
                 <img
                   className="sim-img"
                   src={simGame.background_image}

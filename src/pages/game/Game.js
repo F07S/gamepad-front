@@ -6,17 +6,26 @@ import Similargames from "../../components/similargames/Similargames";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+//ACTIVITY INDICATOR
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
+
+// POP-UP NOTIFICATIONS PACKAGE IMPORT
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Game = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState();
   const [isReviewLoading, setIsReviewLoading] = useState(true);
-
+  const [reviewExists, setReviewExists] = useState(false);
   const [savedFav, setSavedFav] = useState(false);
 
   // USER TOKEN
   const token = Cookies.get("token");
-  console.log(token);
+
   // USER DATA STATES
   const [userId, setUserId] = useState();
 
@@ -34,7 +43,7 @@ const Game = () => {
           // `https://api.rawg.io/api/games/${id}?key=`
           `http://localhost:4500/game/${id}`
         );
-        // console.log(response.data);
+
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -48,6 +57,14 @@ const Game = () => {
         console.log(response.data);
         setReviewsData(response.data);
         setIsReviewLoading(false);
+        const gameId = Number(id);
+        const foundReview = response.data.reviews.find(
+          (review) => review.gameId === gameId
+        );
+        if (foundReview) {
+          setReviewExists(true);
+        }
+        console.log(foundReview);
       } catch (error) {
         console.log(error.response);
       }
@@ -56,16 +73,12 @@ const Game = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/user`);
-        // console.log(response.data);
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
         setUserId(foundUser._id);
-        // console.log(typeof id);
         const gameId = Number(id);
-        // console.log(gameId);
         const favourite = foundUser.favourites.find((fav) => fav.id === gameId);
-        // console.log(favourite);
         if (favourite) {
           setSavedFav(true);
         }
@@ -80,11 +93,15 @@ const Game = () => {
   }, [id, token]);
 
   return isLoading ? (
-    <p>Loading...</p>
+    <main className="background">
+      <section className="home-page">
+        <Dots className="dots-activity-games" />
+      </section>
+    </main>
   ) : (
     <main className="background">
       <section className="home-page">
-        <section key={data.id} className="first-block-game">
+        <section className="first-block-game">
           <div className="main-block">
             <p className="game-name">{data.name}</p>
             <img className="one-game-img" src={data.background_image} alt="" />
@@ -96,8 +113,8 @@ const Game = () => {
                   <button
                     className="btn"
                     onClick={async () => {
+                      toast(`${data.name} added to your collection!`);
                       try {
-                        console.log(userId);
                         const response = await axios.put(
                           `http://localhost:4500/user/update/${userId}`,
 
@@ -109,7 +126,7 @@ const Game = () => {
                         );
 
                         console.log(response);
-                        // setSavedFav(true);
+                        setSavedFav(true);
                       } catch (error) {
                         console.log(error.message);
                         if (
@@ -144,7 +161,7 @@ const Game = () => {
                   <p className="info-label">Platforms</p>
                   {data.parent_platforms.map((platform) => {
                     return (
-                      <span key={platform.id} className="info">
+                      <span key={platform.platform.id} className="info">
                         {platform.platform.name},{" "}
                       </span>
                     );
@@ -167,12 +184,9 @@ const Game = () => {
               </div>
               <div className="second-info-block">
                 <div className="btn-container">
-                  <Link
-                    to={token ? `/review/${data.id}` : "/login"}
-                    onClick={() => {}}
-                  >
+                  <Link to={token ? `/review/${data.id}` : "/login"}>
                     <button className="btn">
-                      <div>
+                      <div className="add-review">
                         <p className="add">Add a</p>
                         <p className="category">Review</p>
                       </div>
@@ -233,35 +247,61 @@ const Game = () => {
 
         <div>
           <div className="game-like-section"></div>
-          <Similargames gameId={id} gameName={data.name} />
+          <Similargames
+            gameId={id}
+            gameName={data.name}
+            setSavedFav={setSavedFav}
+          />
           <section className="review-section">
-            <p className="game-name">Reviews for {data.name}</p>
-            {reviewsData.reviews.map((review) => {
-              return isReviewLoading ? (
-                <p>Loading reviews...</p>
-              ) : (
-                data.id === review.gameId && (
-                  <div className="review-card">
-                    <p className="review-label">{review.title} </p>
-                    <p className="info">{review.review} </p>
-                    <div className="reviewer-profile">
-                      <img
-                        className="profile-img-review"
-                        src={review.userimage}
-                        alt=""
-                      />
-                      <div className="review-name-date">
-                        <p className="info-date">09/03/23</p>
-                        <p className="user-label">{review.user} </p>
+            {reviewExists ? (
+              <p className="game-name">Reviews for {data.name}</p>
+            ) : (
+              <p className="game-name">
+                Be the first to comment on {data.name} by adding a review !
+              </p>
+            )}
+
+            {reviewsData &&
+              reviewsData.reviews.map((review) => {
+                return isReviewLoading ? (
+                  <Dots className="dots-activity-games" />
+                ) : (
+                  data.id === review.gameId && (
+                    <div className="review-card" key={review._id}>
+                      <p className="review-label">{review.title} </p>
+                      <p className="info">{review.review} </p>
+                      <div className="reviewer-profile">
+                        <img
+                          className="profile-img-review"
+                          src={review.userimage}
+                          alt=""
+                        />
+                        <div className="review-name-date">
+                          <p className="info-date">09/03/23</p>
+                          <p className="user-label">{review.user} </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              );
-            })}
+                  )
+                );
+              })}
           </section>
         </div>
       </section>
+      {/* NOTIFICATIONS COMPONENT FROM REACT TOASTIFY PACKAGE */}
+      <ToastContainer
+        className="toast"
+        position="top-right"
+        autoClose={2000}
+        // hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </main>
   );
 };

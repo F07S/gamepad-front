@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+//ACTIVITY INDICATOR
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
+
 const Favourites = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -13,19 +17,16 @@ const Favourites = () => {
 
   // USER TOKEN
   const token = Cookies.get("token");
-  // console.log(token);
 
   useEffect(() => {
     const fetchFavourites = async () => {
       try {
         const response = await axios.get(`http://localhost:4500/user`);
-        // console.log(response.data);
         const foundUser = response.data.user.find(
           (user) => user.token === token
         );
         setData(foundUser);
         setUserId(foundUser._id);
-        // console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -35,19 +36,21 @@ const Favourites = () => {
     fetchFavourites();
   }, [token]);
 
-  console.log(data);
   return isLoading ? (
-    <p>Loading...</p>
+    <main className="background">
+      <section className="collection-page">
+        <Dots className="dots-activity-games" />
+      </section>
+    </main>
   ) : (
     <main className="background">
       <section className="collection-page">
         <p className="title-collection">My Collection</p>
         <section className="favourites">
           {data.favourites.map((fav) => {
-            // console.log(fav.id);
             return (
-              <section className="game-container">
-                <div className="favourite-card" key={fav.id}>
+              <section className="game-container" key={fav.id}>
+                <div className="favourite-card">
                   <Link to={`/game/${fav.id}`}>
                     <img className="sim-img" src={fav.image} alt="character" />
                   </Link>
@@ -56,7 +59,6 @@ const Favourites = () => {
                     className="trash-btn"
                     onClick={async () => {
                       try {
-                        // console.log(userId);
                         const response = await axios.put(
                           `http://localhost:4500/user/deletefav/${userId}`,
 
@@ -69,7 +71,7 @@ const Favourites = () => {
                         const responseUpdate = await axios.get(
                           `http://localhost:4500/user`
                         );
-                        console.log(responseUpdate.data);
+
                         const foundUser = responseUpdate.data.user.find(
                           (user) => user.token === token
                         );

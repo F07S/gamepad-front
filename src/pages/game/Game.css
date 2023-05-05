@@ -76,7 +76,9 @@
   justify-content: space-between;
   padding: 5px;
 }
-
+.add-review {
+  text-decoration: none;
+}
 .add {
   font-size: 11px;
 }

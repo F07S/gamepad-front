@@ -17,18 +17,20 @@
   padding-bottom: 40px;
   /* border: 2px solid red; */
 }
-
+.dots-activity-games {
+  color: #f04555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+}
 .title {
   font-size: 40px;
   font-weight: bold;
 }
 .name {
-  font-size: 13px;
-  /* z-index: 1; */
-  /* position: relative; */
-  /* bottom: 60px;
-  left: 10px; */
-  margin-right: 10px;
+  font-size: 12px;
+  text-align: center;
 }
 .game-pagination {
   display: flex;

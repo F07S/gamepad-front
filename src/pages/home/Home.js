@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
 const Home = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +45,7 @@ const Home = () => {
         <div className="first-block">
           <p className="title">New and upcoming releases</p>
           {isLoading ? (
-            <p>Loading...</p>
+            <Dots className="dots-activity-games" />
           ) : (
             <div className="game-pagination">
               <section className="game-container">

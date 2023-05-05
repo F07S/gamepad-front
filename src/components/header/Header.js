@@ -1,5 +1,7 @@
 import logo from "../../img/logo.png";
 import Cookies from "js-cookie";
+import Dots from "react-activity/dist/Dots";
+import "react-activity/dist/library.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -54,6 +56,7 @@ const Header = ({ handleToken }) => {
               className="page-btn"
               onClick={() => {
                 handleToken(null);
+                navigate("/");
               }}
             >
               Log out
@@ -66,7 +69,7 @@ const Header = ({ handleToken }) => {
             </>
           )}
           {isLoading ? (
-            <p>Loading...</p>
+            <Dots className="dots-activity" />
           ) : (
             token &&
             data.map((user) => {
